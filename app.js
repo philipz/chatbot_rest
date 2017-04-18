@@ -14,8 +14,16 @@ client.on('connect', function () {
 	console.log('Connected to Redis');
 });
 
-function redisSet(key, value) {
-	client.set(key, value, redis.print);
+function redisSet(key, value, res) {
+	client.set(key, value, function (err, reply) {
+		if (err) {
+			throw err;
+			res.send('ER');
+		} else {
+			console.log(reply.toString());
+			res.send('OK');
+		}
+	});
 }
 
 function redisGet(key, res) {
@@ -85,8 +93,7 @@ server.get('/users', function (req, res, next) {
 server.post('/users', function (req, res, next) {
 	if (req.params.passwd === 'tradingbot') {
 		console.log('OIValue:' + req.params.OIValue);
-		redisSet('OI', req.params.OIValue);
-		res.send('OK');
+		redisSet('OI', req.params.OIValue, res);
 	} else {
 		res.send('NG');
 	}
