@@ -94,8 +94,8 @@ server.post('/real', function (req, res, next) {
 
 server.post('/oi', function (req, res, next) {
 	if (req.params.passwd === 'tradingbot') {
-		console.log('OIValue:' + req.params.OIValue);
-		redisSet('OI', req.params.OIValue, res);
+		console.log('OI:' + req.params.OI);
+		redisSet('OI', req.params.OI, res);
 	} else {
 		res.send('NG');
 	}
