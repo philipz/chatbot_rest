@@ -105,6 +105,10 @@ server.get('/oi', function (req, res, next) {
   redisGet('OI', res);
 });
 
-server.listen(1337, function () {
-	console.log('%s listening at %s', server.name, server.url);
+server.get('/real', function (req, res, next) {
+  redisGet('REAL', res);
+});
+
+server.listen(process.env.port || process.env.PORT || 1337, function () {
+    console.log('%s listening to %s', server.name, server.url);
 });
