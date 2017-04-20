@@ -101,12 +101,25 @@ server.post('/oi', function (req, res, next) {
 	}
 });
 
+server.post('/symbol', function (req, res, next) {
+	if (req.params.passwd === 'tradingbot') {
+		console.log('SYMBOL:' + req.params.SYMBOL);
+		redisSet('SYMBOL', req.params.SYMBOL, res);
+	} else {
+		res.send('NG');
+	}
+});
+
 server.get('/oi', function (req, res, next) {
   redisGet('OI', res);
 });
 
 server.get('/real', function (req, res, next) {
   redisGet('REAL', res);
+});
+
+server.get('/symbol', function (req, res, next) {
+  redisGet('SYMBOL', res);
 });
 
 server.listen(process.env.port || process.env.PORT || 1337, function () {
