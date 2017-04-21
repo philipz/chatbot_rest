@@ -85,8 +85,8 @@ server.get('/policy.html', restify.serveStatic({
 
 server.post('/real', function (req, res, next) {
 	if (req.params.passwd === 'tradingbot') {
-		console.log('real:' + req.params.real);
-		redisSet('REAL', req.params.real, res);
+		console.log('real:' + req.params.REAL);
+		redisSet('REAL', req.params.REAL, res);
 	} else {
 		res.send('NG');
 	}
@@ -110,6 +110,15 @@ server.post('/symbol', function (req, res, next) {
 	}
 });
 
+server.post('/symbolw', function (req, res, next) {
+	if (req.params.passwd === 'tradingbot') {
+		console.log('SYMBOLW:' + req.params.SYMBOLW);
+		redisSet('SYMBOLW', req.params.SYMBOLW, res);
+	} else {
+		res.send('NG');
+	}
+});
+
 server.get('/oi', function (req, res, next) {
   redisGet('OI', res);
 });
@@ -120,6 +129,10 @@ server.get('/real', function (req, res, next) {
 
 server.get('/symbol', function (req, res, next) {
   redisGet('SYMBOL', res);
+});
+
+server.get('/symbolw', function (req, res, next) {
+  redisGet('SYMBOLW', res);
 });
 
 server.listen(process.env.port || process.env.PORT || 1337, function () {
