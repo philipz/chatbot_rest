@@ -71,6 +71,18 @@ server.get('/', restify.serveStatic({
 	'default': 'index.html'
 }));
 
+server.get('/options1.html', restify.serveStatic({
+	'directory': __dirname,
+	'charSet': 'utf-8',
+	'default': 'options1.html'
+}));
+
+server.get('/options2.html', restify.serveStatic({
+	'directory': __dirname,
+	'charSet': 'utf-8',
+	'default': 'options2.html'
+}));
+
 server.get('/disclaimer.html', restify.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
@@ -87,6 +99,15 @@ server.post('/real', function (req, res, next) {
 	if (req.params.passwd === 'tradingbot') {
 		console.log('real:' + req.params.REAL);
 		redisSet('REAL', req.params.REAL, res);
+	} else {
+		res.send('NG');
+	}
+});
+
+server.post('/options', function (req, res, next) {
+	if (req.params.passwd === 'tradingbot') {
+		console.log('options:' + req.params.OPTIONS);
+		redisSet('OPTIONS', req.params.OPTIONS, res);
 	} else {
 		res.send('NG');
 	}
@@ -133,6 +154,10 @@ server.get('/symbol', function (req, res, next) {
 
 server.get('/symbolw', function (req, res, next) {
   redisGet('SYMBOLW', res);
+});
+
+server.get('/options', function (req, res, next) {
+  redisGet('OPTIONS', res);
 });
 
 server.listen(process.env.port || process.env.PORT || 1337, function () {
