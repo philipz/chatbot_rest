@@ -65,11 +65,17 @@ server.use(restify.bodyParser({
 
 server.pre(restify.pre.sanitizePath());
 
-server.get(/\/public\/?.*/, restify.serveStatic({
-    directory: __dirname
+server.get(/^\/(public)\/(.*)/, restify.serveStatic({
+    'directory': __dirname
 }));
 
 server.get('/', restify.serveStatic({
+	'directory': __dirname,
+	'charSet': 'utf-8',
+	'default': 'index.html'
+}));
+
+server.get('/index.html', restify.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
 	'default': 'index.html'

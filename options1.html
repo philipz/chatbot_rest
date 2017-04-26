@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
-
 <head>
     <title>選擇權投資建議</title>
     <style type="text/css">
@@ -14,28 +13,37 @@
         #price {
             position: absolute;
             left: 15px;
-            top: 210px;
+            top: 225px;
         }
 
         #contract {
             position: absolute;
             left: 128px;
-            top: 143px;
+            top: 158px;
         }
 
         #balance {
             position: absolute;
             left: 220px;
-            top: 175px;
+            top: 190px;
         }
     </style>
+    <script src="./public/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(
+            $.get("./options", function (data) {
+                    var op_result = data.split(';');
+                    $("#price").text(op_result[1]);
+                    $("#contract").text(op_result[2]);
+                    $("#balance").text(op_result[3]);
+                })
+        );
+    </script>
 </head>
-
 <body>
-    <div id='price'><p>-50</p></div>
-    <div id='contract'><p>9800</p></div>
-    <div id='balance'><p>9850</p></div>
+    <div id='price'>-50</div>
+    <div id='contract'>9800</div>
+    <div id='balance'>9850</div>
     <img src="https://cloud.githubusercontent.com/assets/664465/25320079/6429cbdc-28d6-11e7-87fe-d3a7dce3104b.png" />
 </body>
-
 </html>

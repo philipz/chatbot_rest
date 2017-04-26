@@ -1,6 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE HTML>
 <html>
-
 <head>
     <title>選擇權投資建議</title>
     <style type="text/css">
@@ -13,47 +12,38 @@
         
         #price {
             position: absolute;
-            left: 15px;
-            top: 210px;
+            left: 10px;
+            top: 225px;
         }
         
         #contract {
             position: absolute;
             left: 165px;
-            top: 210px;
+            top: 225px;
         }
         
         #balance {
             position: absolute;
-            left: 105px;
-            top: 125px;
+            left: 100px;
+            top: 140px;
         }
     </style>
-</head>
-
-<body>
-    <div id='price'>
-        <p>-50</p>
-    </div>
-    <div id='contract'>
-        <p>9500</p>
-    </div>
-    <div id='balance'>
-        <p>9450</p>
-    </div>
-    <img src="https://cloud.githubusercontent.com/assets/664465/25320082/662b5248-28d6-11e7-94ee-d652513b1503.png" />
-    <script src="./public/jquery.1.12.4.min.js"></script>
+    <script src="./public/jquery-1.12.4.min.js"></script>
     <script type="text/javascript">
         $(document).ready(
-            function () {
-                $.get("ajax/test.html", function (data) {
-                    var op_result = data.toString().split();
-                    $("#price").val = op_result[1];
-                    $("#contract").val = op_result[2];
-                    $("#balance").val = op_result[2];
-                });
-            });
+            $.get("./options", function (data) {
+                    var op_result = data.split(';');
+                    $("#price").text(op_result[1]);
+                    $("#contract").text(op_result[2]);
+                    $("#balance").text(op_result[3]);
+                })
+        );
     </script>
+</head>
+<body>
+    <div id='price'>-50</div>
+    <div id='contract'>9500</div>
+    <div id='balance'>9450</div>
+    <img src="https://cloud.githubusercontent.com/assets/664465/25320082/662b5248-28d6-11e7-94ee-d652513b1503.png" />
 </body>
-
 </html>
