@@ -1,4 +1,4 @@
-#!/bin/bash                                                                                                                                                                                                     
+#!/bin/sh                                                                                                                                                                                                     
 IFS=" "
 export IFS;
 words=$(cat result.txt | grep Request)

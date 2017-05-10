@@ -25,9 +25,10 @@ test:
     - docker pull registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker network create wrktest
     - docker run -d -p 1337:1337 --name app --network wrktest registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - sleep 10
+    - sleep 5
     - docker run --name wrk --network wrktest --rm williamyeh/wrk -t2 -c5 -d5s --timeout 2s http://app:1337/ > test/result.txt
-    - cd test && cat result.txt && test.sh
+    - apk add --update bc
+    - cd test && cat result.txt && ./test.sh
 deploy:
   stage: deploy
   script:
