@@ -34,7 +34,7 @@ deploy:
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - docker login -u dockware -p $AZURE_DOCKER_PASS
+    - docker login -u dockware -p $AZURE_DOCKER_PASS dockware.azurecr.io
     - docker tag registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG dockware.azurecr.io/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker push dockware.azurecr.io/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
 release:
