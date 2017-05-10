@@ -23,8 +23,9 @@ test:
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - docker run -d -p 1337:1337 registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker run -d -p 1337:1337 --name rest registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - sleep 5
+    - docker logs rest
     - curl http://localhost:1337/
 deploy:
   stage: deploy
