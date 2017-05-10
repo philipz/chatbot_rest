@@ -1,0 +1,40 @@
+image: docker:latest
+services:
+  - docker:dind
+stages:
+  - build
+  - test
+  - deploy
+  - release
+variables:
+    DOCKER_IMAGE_NAME: "chatbot_rest"
+    DOCKER_IMAGE_TAG: "201705101"
+                        
+before_script:
+  - docker info
+build:
+  stage: build      
+  script:
+    - docker build . -t registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker push registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+test:
+  stage: test
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker run -d -p 1337:1337 registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - curl http://localhost:1337/
+depoly:
+  stage: depoly
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker login -u $AZURE_DOCKER_USER -p $AZURE_DOCKER_PASS
+    - docker tag registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG dockware.azurecr.io/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker push dockware.azurecr.io/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+release:
+  stage: release
+  script:
+    - docker pull azuresdk/azure-cli-python:0.2.8
+    - docker run -ti --rm -v $(pwd)/release.sh:/release.sh -e AZURE_LOGIN_USER=$AZURE_LOGIN_USER -e AZURE_PASSWORD=$AZURE_PASSWORD -e AZURE_TENANT=$AZURE_TENANT -e DOCKER_IMAGE_NAME=$DOCKER_IMAGE_NAME -e DOCKER_IMAGE_TAG=$DOCKER_IMAGE_TAG azuresdk/azure-cli-python:0.2.8 /release.sh
