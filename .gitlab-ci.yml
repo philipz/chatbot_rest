@@ -25,8 +25,7 @@ test:
     - docker pull registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker run -d -p 0.0.0.0:1337:1337 --name rest registry.gitlab.com/$DOCKER_USER/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - sleep 5
-    - docker ps
-    - curl http://localhost:1337/
+    - curl http://127.0.0.1:1337/
 deploy:
   stage: deploy
   script:
