@@ -4,7 +4,7 @@ export IFS;
 words=$(cat result.txt | grep Request)
 rsnum=${words##* }
 echo $rsnum
-std=1000.0
+std=400.0
 if (( $(echo "$rsnum > $std" | bc -l) )); then
 	echo -e "[-----------------------"
 	echo -e "[Performace Tests passed"
