@@ -41,4 +41,4 @@ release:
   stage: release
   script:
     - docker pull azuresdk/azure-cli-python:0.2.8
-    - docker run -t --rm -v $(pwd)/release.sh:/release.sh -e AZURE_LOGIN_USER=$AZURE_LOGIN_USER -e AZURE_PASSWORD=$AZURE_PASSWORD -e AZURE_TENANT=$AZURE_TENANT -e DOCKER_IMAGE_NAME=$DOCKER_IMAGE_NAME -e DOCKER_IMAGE_TAG=$DOCKER_IMAGE_TAG azuresdk/azure-cli-python:0.2.8 /release.sh
+    - docker run -t --rm -v $(pwd)/release.sh:/release.sh -e AZURE_LOGIN_USER=$AZURE_LOGIN_USER -e AZURE_PASSWORD=$AZURE_PASSWORD -e AZURE_TENANT=$AZURE_TENANT -e DOCKER_IMAGE_NAME=$DOCKER_IMAGE_NAME -e DOCKER_IMAGE_TAG=$DOCKER_IMAGE_TAG -e AZURE_REG_PASSWORD=$AZURE_DOCKER_PASS azuresdk/azure-cli-python:0.2.8 /release.sh
