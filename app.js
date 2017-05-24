@@ -93,6 +93,12 @@ server.get('/options2.html', restify.serveStatic({
 	'default': 'options2.html'
 }));
 
+server.get('/options6.html', restify.serveStatic({
+	'directory': __dirname,
+	'charSet': 'utf-8',
+	'default': 'options6.html'
+}));
+
 server.get('/disclaimer.html', restify.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
