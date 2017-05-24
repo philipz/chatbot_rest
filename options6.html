@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>選擇權投資建議</title>
+    <style type="text/css">
+        img {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+        }
+        
+        #price {
+            position: absolute;
+            left: 20px;
+            top: 250px;
+        }
+        
+        #price1 {
+            position: absolute;
+            left: 20px;
+            top: 115px;
+        }
+        
+        #contract {
+            position: absolute;
+            left: 210px;
+            top: 165px;
+        }
+        
+        #balance {
+            position: absolute;
+            left: 170px;
+            top: 145px;
+        }
+
+        #contract1 {
+            position: absolute;
+            left: 140px;
+            top: 105px;
+        }
+    </style>
+    <script src="./public/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(
+            $.get("./options", function (data) {
+                    var op_result = data.split(';');
+                    $("#price").text(op_result[1]);
+                    $("#contract").text(op_result[2]);
+                    $("#balance").text(op_result[3]);
+                    $("#price1").text(op_result[4]);
+                    $("#contract1").text(op_result[5]);
+                })
+        );
+    </script>
+</head>
+<body>
+    <div id='price'>-82</div>
+    <div id='price1'>48</div>
+    <div id='contract'>10000</div>
+    <div id='balance'>9966</div>
+    <div id='contract1'>9900</div>
+    <img src="./public/images/options_s6.png" />
+</body>
+</html>
