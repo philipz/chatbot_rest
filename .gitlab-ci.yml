@@ -8,7 +8,7 @@ stages:
   - release
 variables:
     DOCKER_IMAGE_NAME: "chatbot_rest"
-    DOCKER_IMAGE_TAG: "201705101"
+    DOCKER_IMAGE_TAG: "201705243"
                         
 before_script:
   - docker info
