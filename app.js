@@ -2,7 +2,7 @@ var os = require('os');
 var restify = require('restify');
 var redis = require('redis');
 var client = redis.createClient(6379, 'tradingbot.redis.cache.windows.net', { no_ready_check: true });
-client.auth('pm/THZHkMq0u1SfLfuVDNBhDT/v/J5Flu0EpsrLXos4=', function (err) {
+client.auth('PASSWORD', function (err) {
 	if (err) throw err;
 });
 
