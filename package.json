@@ -14,7 +14,7 @@
   "author": "Philipz",
   "license": "GPL-3.0",
   "dependencies": {
-    "redis": "^2.7.1",
-    "restify": "^4.3.0"
+    "redis": "^4.7.0",
+    "restify": "^11.1.0"
   }
 }
