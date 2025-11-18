@@ -1,37 +1,51 @@
 var os = require('os');
 var restify = require('restify');
 var redis = require('redis');
-var client = redis.createClient(6379, 'tradingbot.redis.cache.windows.net', { no_ready_check: true });
-client.auth('PASSWORD', function (err) {
-	if (err) throw err;
+
+// Redis v4 configuration
+var client = redis.createClient({
+	socket: {
+		host: 'tradingbot.redis.cache.windows.net',
+		port: 6379
+	},
+	password: 'PASSWORD'
 });
 
-client.on("error", function (err) {
-	console.log("Error " + err);
+client.on('error', function (err) {
+	console.log('Error ' + err);
 });
 
 client.on('connect', function () {
 	console.log('Connected to Redis');
 });
 
+// Connect to Redis
+client.connect().catch(function(err) {
+	console.error('Failed to connect to Redis:', err);
+});
+
 function redisSet(key, value, res) {
-	client.set(key, value, function (err, reply) {
-		if (err) {
-			throw err;
-			res.send('ER');
-		} else {
-			console.log(reply.toString());
+	client.set(key, value)
+		.then(function(reply) {
+			console.log(reply);
 			res.send('OK');
-		}
-	});
+		})
+		.catch(function(err) {
+			console.error('Redis SET error:', err);
+			res.send('ER');
+		});
 }
 
 function redisGet(key, res) {
-	client.get(key, function (err, reply) {
-		if (err) throw err;
-		console.log(reply.toString());
-		res.send(reply.toString());
-	});
+	client.get(key)
+		.then(function(reply) {
+			console.log(reply);
+			res.send(reply || '');
+		})
+		.catch(function(err) {
+			console.error('Redis GET error:', err);
+			res.send('');
+		});
 }
 
 function respond(req, res, next) {
@@ -41,71 +55,61 @@ function respond(req, res, next) {
 }
 
 var server = restify.createServer();
-server.use(restify.queryParser());
-server.use(restify.bodyParser({
+server.use(restify.plugins.queryParser());
+server.use(restify.plugins.bodyParser({
     maxBodySize: 0,
     mapParams: true,
     mapFiles: false,
     overrideParams: false,
-    multipartHandler: function(part) {
-        part.on('data', function(data) {
-          /* do something with the multipart data */
-        });
-    },
-    multipartFileHandler: function(part) {
-        part.on('data', function(data) {
-          /* do something with the multipart file data */
-        });
-    },
     keepExtensions: false,
     uploadDir: os.tmpdir(),
     multiples: true,
     hash: 'sha1'
  }));
 
-server.pre(restify.pre.sanitizePath());
+server.pre(restify.plugins.pre.sanitizePath());
 
-server.get(/^\/(public)\/(.*)/, restify.serveStatic({
+server.get(/^\/(public)\/(.*)/, restify.plugins.serveStatic({
     'directory': __dirname
 }));
 
-server.get('/', restify.serveStatic({
+server.get('/', restify.plugins.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
 	'default': 'index.html'
 }));
 
-server.get('/index.html', restify.serveStatic({
+server.get('/index.html', restify.plugins.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
 	'default': 'index.html'
 }));
 
-server.get('/options1.html', restify.serveStatic({
+server.get('/options1.html', restify.plugins.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
 	'default': 'options1.html'
 }));
 
-server.get('/options2.html', restify.serveStatic({
+server.get('/options2.html', restify.plugins.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
 	'default': 'options2.html'
 }));
 
-server.get('/options6.html', restify.serveStatic({
+server.get('/options6.html', restify.plugins.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
 	'default': 'options6.html'
 }));
 
-server.get('/disclaimer.html', restify.serveStatic({
+server.get('/disclaimer.html', restify.plugins.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
 	'default': 'disclaimer.html'
 }));
 
-server.get('/policy.html', restify.serveStatic({
+server.get('/policy.html', restify.plugins.serveStatic({
 	'directory': __dirname,
 	'charSet': 'utf-8',
 	'default': 'policy.html'
